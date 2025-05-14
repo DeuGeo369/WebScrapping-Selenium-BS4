@@ -8,6 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 
+
 # --- CONFIGURATION ---
 CHROMEDRIVER_PATH = r'F:\HCJS\Webscrapping\drivers\chromedriver.exe'
 URL = #Find your own URL
