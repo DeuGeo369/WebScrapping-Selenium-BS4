@@ -8,10 +8,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 
-
 # --- CONFIGURATION ---
 CHROMEDRIVER_PATH = r'F:\HCJS\Webscrapping\drivers\chromedriver.exe'
-URL = #Find your own URL
+URL = "http://drrportal.gov.np/"
 EXISTING_FILE = 'incident.xlsx'
 OUTPUT_FILE = 'incident_report_new_only.csv'
 
@@ -29,7 +28,7 @@ for key in ['district', 'incident date', 'total death', 'incident place']:
             break
 
 if len(column_map) < 4:
-    raise KeyError(" Could not find all required columns. Found: " + str(column_map))
+    raise KeyError("❌ Could not find all required columns. Found: " + str(column_map))
 
 # Use the actual mapped column names
 KEY_COLUMNS = list(column_map.values())
@@ -75,7 +74,7 @@ while match_count < 3:
             seen_keys.add(key)
 
     if match_count >= 3:
-        print(" Found 3 existing matches. Scraping stopped.")
+        print("✅ Found 3 existing matches. Scraping stopped.")
         break
 
     try:
@@ -83,7 +82,7 @@ while match_count < 3:
         next_button.click()
         time.sleep(2)
     except Exception as e:
-        print(" No more pages or navigation error:", str(e))
+        print("⚠️ No more pages or navigation error:", str(e))
         break
 
 driver.quit()
@@ -113,7 +112,7 @@ new_data_df = new_data_df.reindex(columns=final_columns).fillna('')
 
 # Save new records to CSV
 new_data_df.to_csv(OUTPUT_FILE, index=False, encoding='utf-8-sig')
-print(f" {len(new_data_df)} new records saved to '{OUTPUT_FILE}'.")
+print(f"✅ {len(new_data_df)} new records saved to '{OUTPUT_FILE}'.")
 
 # --- Prepend new rows to Excel ---
 if not new_data_df.empty:
@@ -130,7 +129,7 @@ if not new_data_df.empty:
 
     # Save back to Excel
     combined_df.to_excel(EXISTING_FILE, index=False)
-    print(f" Prepended {len(new_data_df)} rows to '{EXISTING_FILE}'.")
+    print(f"📌 Prepended {len(new_data_df)} rows to '{EXISTING_FILE}'.")
 else:
-    print("ℹ No new data found to prepend.")
-
+    print("ℹ️ No new data found to prepend.")
+    
